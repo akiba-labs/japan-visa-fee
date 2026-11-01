@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Calculator } from "@/components/calculator";
 import { FaqSection, type FaqItem } from "@/components/faq-section";
+import { TripPartners } from "@/components/trip-partners";
 import { PERMANENT, SOURCES, TIERS } from "@/lib/fees";
 import { EXAMPLE_SHARED, PUBLIC_URL, resultPath, yen } from "@/lib/share";
 
@@ -188,6 +189,8 @@ export default function HomePage() {
       </p>
 
       <FaqSection items={faq} heading="Japan visa fee questions" />
+
+      <TripPartners />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppLd).replace(/</g, "\\u003c") }} />
     </div>
   );
