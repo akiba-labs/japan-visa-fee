@@ -3,6 +3,7 @@ import { Calculator } from "@/components/calculator";
 import { FaqSection, type FaqItem } from "@/components/faq-section";
 import { TripPartners } from "@/components/trip-partners";
 import { PERMANENT, SOURCES, TIERS } from "@/lib/fees";
+import { API_PAUSED_NOTE, isGithubPages, pagesSiteUrl, withBasePath } from "@/lib/hosting";
 import { EXAMPLE_SHARED, PUBLIC_URL, resultPath, yen } from "@/lib/share";
 
 const title = "Japan visa fee calculator 2026: residence permit fees by period";
@@ -32,7 +33,7 @@ const webAppLd = {
   "@type": "WebApplication",
   name: "Japan Visa Fee Calculator",
   alternateName: "Japan residence permit fee calculator",
-  url: PUBLIC_URL,
+  url: isGithubPages ? pagesSiteUrl(PUBLIC_URL) : PUBLIC_URL,
   applicationCategory: "FinanceApplication",
   operatingSystem: "Any",
   isAccessibleForFree: true,
@@ -100,7 +101,9 @@ const faq: FaqItem[] = [
   },
   {
     q: "Is there a free Japan visa fee calculator API for AI agents?",
-    a: `Yes. Free, no key, CORS open: GET ${PUBLIC_URL}/api/fee?permit=extension&grantedMonths=12&method=counter returns the fee, stamps, online price, and sources. Full table at ${PUBLIC_URL}/api/rules, OpenAPI at ${PUBLIC_URL}/openapi.json, and the japan_visa_fee_check tool on https://free-agent-tools.vercel.app/mcp.`,
+    a: isGithubPages
+      ? API_PAUSED_NOTE
+      : `Yes. Free, no key, CORS open: GET ${PUBLIC_URL}/api/fee?permit=extension&grantedMonths=12&method=counter returns the fee, stamps, online price, and sources. Full table at ${PUBLIC_URL}/api/rules, OpenAPI at ${PUBLIC_URL}/openapi.json, and the japan_visa_fee_check tool on https://free-agent-tools.vercel.app/mcp.`,
   },
 ];
 
@@ -156,8 +159,8 @@ export default function HomePage() {
           </table>
         </div>
         <p className="mt-3 text-sm text-muted">
-          Before: ¥6,000 counter / ¥5,500 online for change or extension, ¥10,000 for permanent residence. Example shareable result:{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href={resultPath(EXAMPLE_SHARED)}>
+          Before: ¥6,000 counter / ¥5,500 online for change or extension, ¥10,000 for permanent residence. {isGithubPages ? "Example:" : "Example shareable result:"}{" "}
+          <a className="underline underline-offset-2 hover:text-foreground" href={isGithubPages ? withBasePath("/") : resultPath(EXAMPLE_SHARED)}>
             1-year renewal at the counter → ¥33,000
           </a>
           .
@@ -166,18 +169,28 @@ export default function HomePage() {
 
       <section className="mt-16 max-w-3xl">
         <h2 className="font-display text-3xl tracking-tight sm:text-4xl">Agent-callable JSON API</h2>
-        <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-          Free, no key, CORS open.{" "}
-          <code className="rounded bg-panel px-1.5 py-0.5 font-mono text-xs text-foreground">GET {PUBLIC_URL}/api/fee?permit=extension&amp;grantedMonths=12&amp;method=counter</code> or POST
-          JSON. Also{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href="/api/rules">/api/rules</a>,{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href="/openapi.json">/openapi.json</a>,{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href="/llms.txt">/llms.txt</a>, and the MCP tool on{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href="https://free-agent-tools.vercel.app/" target="_blank" rel="noopener noreferrer">
-            free-agent-tools
-          </a>
-          .
-        </p>
+        {isGithubPages ? (
+          <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
+            {API_PAUSED_NOTE}{" "}
+            <a className="underline underline-offset-2 hover:text-foreground" href={withBasePath("/llms.txt")}>
+              llms.txt
+            </a>{" "}
+            describes the calculator and the API contract.
+          </p>
+        ) : (
+          <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
+            Free, no key, CORS open.{" "}
+            <code className="rounded bg-panel px-1.5 py-0.5 font-mono text-xs text-foreground">GET {PUBLIC_URL}/api/fee?permit=extension&amp;grantedMonths=12&amp;method=counter</code> or POST
+            JSON. Also{" "}
+            <a className="underline underline-offset-2 hover:text-foreground" href="/api/rules">/api/rules</a>,{" "}
+            <a className="underline underline-offset-2 hover:text-foreground" href="/openapi.json">/openapi.json</a>,{" "}
+            <a className="underline underline-offset-2 hover:text-foreground" href="/llms.txt">/llms.txt</a>, and the MCP tool on{" "}
+            <a className="underline underline-offset-2 hover:text-foreground" href="https://free-agent-tools.vercel.app/" target="_blank" rel="noopener noreferrer">
+              free-agent-tools
+            </a>
+            .
+          </p>
+        )}
       </section>
 
       <p className="mt-6 max-w-3xl text-sm text-muted">
