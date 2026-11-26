@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { SOURCES } from "@/lib/fees";
 import { DISCLAIMER_SHORT, HONESTY } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Disclaimer", description: DISCLAIMER_SHORT };
+export const metadata: Metadata = {
+  title: "Disclaimer",
+  description: DISCLAIMER_SHORT,
+  alternates: { canonical: "/legal/disclaimer" },
+};
 
 export default function DisclaimerPage() {
   return (

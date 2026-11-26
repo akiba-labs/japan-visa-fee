@@ -2,7 +2,8 @@
 
 Free calculator for Japan's residence permit fees (在留許可手数料) revised on **2026-10-01**: extension of period of stay (visa renewal), change of status, and permanent residence.
 
-- Live: https://japan-visa-fee.vercel.app
+- Full app and API (Vercel): https://japan-visa-fee.vercel.app
+- Calculator (GitHub Pages): https://akiba-labs.github.io/japan-visa-fee/
 - API: `GET/POST /api/fee`, `GET /api/rules`
 - Agent docs: `/llms.txt`, `/openapi.json`, `/.well-known/ai-plugin.json`
 - MCP tool: `japan_visa_fee_check` on https://free-agent-tools.vercel.app/mcp
@@ -41,6 +42,11 @@ Sources: https://www.moj.go.jp/isa/01_00644.html · https://www.moj.go.jp/isa/co
 npm install
 npm test
 npm run build
+npm run build:pages
 ```
+
+`npm run build` is the Vercel app (calculator, JSON API, share pages). `npm run build:pages` writes a static `out/` for GitHub Pages and checks that internal links and assets resolve under `/japan-visa-fee`. Server routes stay in the repo; the Pages script only moves them aside for that build.
+
+GitHub settings: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Pushes to `master` deploy with `.github/workflows/pages.yml`. The copy-paste steps for the other tool repos are at the top of `scripts/build-pages.mjs`.
 
 MIT license.
